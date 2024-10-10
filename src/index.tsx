@@ -3,28 +3,33 @@ import { render } from "solid-js/web";
 
 import "./index.css";
 import { App } from "./App";
+import { SVG } from "@svgdotjs/svg.js";
+import { defineHex, Grid, Hex, rectangle } from "honeycomb-grid";
 
-import { Display, RNG } from "rot-js";
-import { DisplayOptions } from "rot-js/lib/display/types";
+const hex = defineHex({ dimensions: 30, origin: "topLeft" });
+const grid = new Grid(hex, rectangle({ width: 10, height: 10 }));
 
-const o: Partial<DisplayOptions> = {
-  width: 80,
-  height: 50,
-  layout: "hex",
-};
+const draw = SVG().addTo("body").size("100%", "100%");
 
-const display = new Display(o);
-const canvas = display.getContainer()!;
+grid.forEach(renderSVG);
 
-document.body.append(canvas);
+function renderSVG(hex: Hex) {
+  const polygon = draw
+    // create a polygon from a hex's corner points
+    .polygon(hex.corners.map(({ x, y }) => `${x},${y}`) as any)
+    .fill("none")
+    .stroke({ width: 1, color: "#999" });
 
-for (var y = 0; y < 5; y++) {
-  for (var x = y % 2; x < 8; x += 2) {
-    var bg = RNG.getItem(["#333", "#666", "#999", "#ccc", "#fff"]);
-    display.draw(x, y, "•", "#000", bg);
-  }
+  return draw.group().add(polygon);
 }
 
-const root = document.getElementById("root");
+document.addEventListener("click", ({ offsetX, offsetY }) => {
+  const hex = grid.pointToHex(
+    { x: offsetX, y: offsetY },
+    { allowOutside: false }
+  );
 
-render(() => <App />, root!);
+  console.log(hex);
+});
+
+render(() => <App />, document.getElementById("root")!);
