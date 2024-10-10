@@ -4,27 +4,29 @@ import { render } from "solid-js/web";
 import "./index.css";
 import { App } from "./App";
 
-import { Display, RNG } from "rot-js";
-import { DisplayOptions } from "rot-js/lib/display/types";
+import { GridGenerator, Hexagon, HexGrid, Layout } from "./hexagons";
 
-const o: Partial<DisplayOptions> = {
-  width: 80,
-  height: 50,
-  layout: "hex",
-};
+const hexagons = GridGenerator.parallelogram(-2, 3, -2, 1);
 
-const display = new Display(o);
-const canvas = display.getContainer()!;
+const Grid = () => (
+  <div>
+    <h1>Basic example of HexGrid usage.</h1>
+    <HexGrid width={1200} height={1000}>
+      <Layout size={{ x: 7, y: 7 }}>
+        {hexagons.map((hex, i) => (
+          <Hexagon key={i} q={hex.q} r={hex.r} s={hex.s} />
+        ))}
+      </Layout>
+    </HexGrid>
+  </div>
+);
 
-document.body.append(canvas);
-
-for (var y = 0; y < 5; y++) {
-  for (var x = y % 2; x < 8; x += 2) {
-    var bg = RNG.getItem(["#333", "#666", "#999", "#ccc", "#fff"]);
-    display.draw(x, y, "•", "#000", bg);
-  }
-}
-
-const root = document.getElementById("root");
-
-render(() => <App />, root!);
+render(
+  () => (
+    <>
+      <App />
+      <Grid />
+    </>
+  ),
+  document.getElementById("root")!
+);
