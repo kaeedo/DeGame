@@ -22,6 +22,7 @@ export type HexagonDragDropEventHandler<AdditionalData = any> = (
 export type HexagonMouseEventHandler = (event: MouseEvent, h: H) => void;
 
 export type HexagonProps = {
+  key?: number;
   q: number;
   r: number;
   s: number;
@@ -99,69 +100,64 @@ export function Hexagon(
     };
   }, [q, r, s, layout]);
 
-  const { hex, pixel } = hexPixel();
-
-  // for backwards comapatbility
-  const state = { hex };
-
   const fillId = fill ? `url(#${fill})` : undefined;
   const draggable = { draggable: true } as any;
   return (
     <g
-      className={`hexagon-group ${className}`}
-      transform={`translate(${pixel.x}, ${pixel.y})`}
+      class={`shape-group ${className ? className : ""}`}
+      transform={`translate(${hexPixel().pixel.x}, ${hexPixel().pixel.y})`}
       {...rest}
       {...draggable}
       onDragStart={(e) => {
         if (onDragStart) {
           const targetProps: TargetProps = {
-            hex: hex,
-            pixel,
+            hex: hexPixel().hex,
+            pixel: hexPixel().pixel,
             data: data,
             fill: fill,
             class: className,
           };
           e.dataTransfer?.setData("hexagon", JSON.stringify(targetProps));
-          onDragStart(e, { data, state, props });
+          onDragStart(e, { data, state: hexPixel(), props });
         }
       }}
       onDragEnd={(e) => {
         if (onDragEnd) {
           e.preventDefault();
           const success = e.dataTransfer?.dropEffect !== "none";
-          onDragEnd(e, { state, props }, success);
+          onDragEnd(e, { state: hexPixel(), props }, success);
         }
       }}
       onDrop={(e) => {
         if (onDrop) {
           e.preventDefault();
           const target = JSON.parse(e.dataTransfer?.getData("hexagon") || "");
-          onDrop(e, { data, state, props }, target);
+          onDrop(e, { data, state: hexPixel(), props }, target);
         }
       }}
       onDragOver={(e) => {
         if (onDragOver) {
-          onDragOver(e, { data, state, props });
+          onDragOver(e, { data, state: hexPixel(), props });
         }
       }}
       onMouseEnter={(e) => {
         if (onMouseEnter) {
-          onMouseEnter(e, { data, state, props });
+          onMouseEnter(e, { data, state: hexPixel(), props });
         }
       }}
       onClick={(e) => {
         if (onClick) {
-          onClick(e, { data, state, props });
+          onClick(e, { data, state: hexPixel(), props });
         }
       }}
       onMouseOver={(e) => {
         if (onMouseOver) {
-          onMouseOver(e, { data, state, props });
+          onMouseOver(e, { data, state: hexPixel(), props });
         }
       }}
       onMouseLeave={(e) => {
         if (onMouseLeave) {
-          onMouseLeave(e, { data, state, props });
+          onMouseLeave(e, { data, state: hexPixel(), props });
         }
       }}
     >

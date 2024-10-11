@@ -3,33 +3,30 @@ import { render } from "solid-js/web";
 
 import "./index.css";
 import { App } from "./App";
-import { SVG } from "@svgdotjs/svg.js";
-import { defineHex, Grid, Hex, rectangle } from "honeycomb-grid";
 
-const hex = defineHex({ dimensions: 30, origin: "topLeft" });
-const grid = new Grid(hex, rectangle({ width: 10, height: 10 }));
+import { GridGenerator, Hexagon, HexGrid, Layout } from "./hexagons";
 
-const draw = SVG().addTo("body").size("100%", "100%");
+const hexagons = GridGenerator.parallelogram(-2, 3, -2, 1);
 
-grid.forEach(renderSVG);
+const Grid = () => (
+  <div>
+    <h1>Basic example of HexGrid usage.</h1>
+    <HexGrid width={1200} height={1000}>
+      <Layout size={{ x: 7, y: 7 }}>
+        {hexagons.map((hex, i) => (
+          <Hexagon key={i} q={hex.q} r={hex.r} s={hex.s} />
+        ))}
+      </Layout>
+    </HexGrid>
+  </div>
+);
 
-function renderSVG(hex: Hex) {
-  const polygon = draw
-    // create a polygon from a hex's corner points
-    .polygon(hex.corners.map(({ x, y }) => `${x},${y}`) as any)
-    .fill("none")
-    .stroke({ width: 1, color: "#999" });
-
-  return draw.group().add(polygon);
-}
-
-document.addEventListener("click", ({ offsetX, offsetY }) => {
-  const hex = grid.pointToHex(
-    { x: offsetX, y: offsetY },
-    { allowOutside: false }
-  );
-
-  console.log(hex);
-});
-
-render(() => <App />, document.getElementById("root")!);
+render(
+  () => (
+    <>
+      <App />
+      <Grid />
+    </>
+  ),
+  document.getElementById("root")!
+);
