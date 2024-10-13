@@ -4,7 +4,7 @@ import { JSX } from "solid-js/jsx-runtime";
 import { useContext } from "solid-js";
 import { Context } from "../Layout";
 
-type H = { data?: any; state: { hex: Hex }; props: HexagonProps };
+export type H = { data?: any; state: { hex: Hex }; props: HexagonProps };
 
 export type HexagonMouseEventHandler = (event: MouseEvent, h: H) => void;
 
