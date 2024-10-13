@@ -9,10 +9,14 @@ export type TextProps = {
 
 // TODO Text is a separate component so that it could wrap the given text inside the surrounding hexagon
 export function Text(props: TextProps) {
-  const { children, x, y, ...rest } = props;
   return (
-    <text x={x || 0} y={y ? y : "0.3em"} text-anchor="middle" {...rest}>
-      {children}
+    <text
+      x={props.x || 0}
+      y={props.y ? props.y : "0.3em"}
+      text-anchor="middle"
+      {...props}
+    >
+      {props.children}
     </text>
   );
 }

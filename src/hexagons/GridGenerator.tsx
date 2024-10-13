@@ -1,6 +1,13 @@
 import { Hex } from "./models/Hex";
 import { HexUtils } from "./HexUtils";
 
+///////////////////////////////////////
+///////////////////////////////////////
+// ONLY HERE FOR REFERENCE
+// ONLY HERE FOR REFERENCE
+///////////////////////////////////////
+///////////////////////////////////////
+
 type Generator = (args: any) => Hex[];
 
 /** This class contains static methods for generating Hex coordinates
@@ -110,5 +117,3 @@ export class GridGenerator {
     return hexas;
   }
 }
-
-export default GridGenerator;

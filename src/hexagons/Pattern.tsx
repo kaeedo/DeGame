@@ -12,24 +12,28 @@ const defaultSize = new Point(10, 10);
  * Defines an `<defs><pattern><image>` group (will not be rendered) in order to allow defining images.
  * The given id can be used on the `Hexagon` to render the image
  */
-export function Pattern({ id, link, size = defaultSize }: PatternProps) {
+export function Pattern(props: PatternProps) {
+  const id = () => props.id;
+  const link = () => props.link;
+  const size = () => props.size ?? defaultSize;
+
   return (
     <defs>
       <pattern
-        id={id}
+        id={id()}
         patternUnits="objectBoundingBox"
         x={0}
         y={0}
-        width={size.x}
-        height={size.y}
+        width={size().x}
+        height={size().y}
       >
         <image
-          href={link}
+          href={link()}
           // xlinkHref={link}
           x={0}
           y={0}
-          width={size.x * 2}
-          height={size.y * 2}
+          width={size().x * 2}
+          height={size().y * 2}
         />
       </pattern>
     </defs>

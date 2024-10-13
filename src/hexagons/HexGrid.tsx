@@ -12,18 +12,13 @@ type Props = {} & JSX.SvgSVGAttributes<SVGSVGElement>;
  * @param {string} SVGProps.viewBox - the container's internal coordinate system
  * @returns
  */
-export function HexGrid({
-  width = 800,
-  height = 600,
-  viewBox = "-50 -50 100 100",
-  ...props
-}: Props) {
+export function HexGrid(props: Props) {
   return (
     <svg
       class="grid"
-      width={width}
-      height={height}
-      viewBox={viewBox}
+      width={props.width ?? 800}
+      height={props.height ?? 600}
+      viewBox={props.viewBox ?? "-50 -50 100 100"}
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
