@@ -9,9 +9,6 @@
     "preview": "bunx --bun vite preview"
   },
   "dependencies": {
-    "@svgdotjs/svg.js": "3.2.4",
-    "honeycomb-grid": "4.1.5",
-    "rot-js": "2.2.0",
     "solid-js": "1.9.2"
   },
   "devDependencies": {
